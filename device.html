@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/index.css">
+  </head>
+  <body>
+    <!-- 内容 -->
+    <div class="index-content">
+      <div class="flex j-s-c">
+        <h4 class="f-weight f-34">设备</h4>
+      </div>
+      <div class="block-list flex fl-wrap"></div>
+    </div>
+
+    <!-- 底部tab -->
+    <div class="footer fl-ar">
+      <a href="./index.html">
+        <img src="/images/home-n.png" alt="">
+        <p>首页</p>
+      </a>
+      <a href="#">
+        <img src="/images/shebei-a.png" alt="">
+        <p class="blue-1">设备</p>
+      </a>
+      <a href="./mine.html">
+        <img src="/images/wode-n.png" alt="">
+        <p>我的</p>
+      </a>
+    </div>
+
+    <script src="/js/jquery-1.9.1.min.js"></script>
+    <script src="/js/template-web.js"></script>
+
+    <!-- 定义模板 -->
+    <script id="tpl" type="text/html">
+      <!-- 遍历数组里的data属性 -->
+      {{each data}}
+      <div class="block-icon">
+        <div class="flex f-weight j-s-b">
+          <p class="f-28 black-1">{{$value.title}}</p>
+          <p class="f-24 gray-90">{{$value.pos}}</p>
+        </div>
+        <div class="flex j-s-b al-center mt-40">
+          <img class="source" src="{{$value.source}}" alt="" />
+          {{if $value.info}}
+          <div class="f-weight">
+            <p class="f-50">
+              {{$value.info.PM2dot5}}
+              <span class="blue-1 f-26">{{$value.info.level}}</span>
+            </p>
+            <p class="f-24 gray-90">PM2.5/1h</p>
+          </div>
+          {{else}}
+          <div class="close-btn {{$value.status ? 'is-open' : ''}}">
+            <img src="{{$value.status ? '/images/close_1_icon.png' : '/images/close_2_icon.png'}}" alt="" />
+          </div>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}}
+    </script>
+
+    <script>
+      $.ajax({
+        url: '/data/data.json',
+        method: 'GET',
+        success: function(res) {
+          render(res);
+        }
+      })
+
+      function render(res) {
+        var html = template("tpl", res);
+
+        $(".block-list").html(html);
+      }
+    </script>
+  </body>
+</html>
